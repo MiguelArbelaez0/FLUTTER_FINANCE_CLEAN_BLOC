@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_finance_clean_bloc/core/utils/local_database_service.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+
 import 'app/app.dart';
 import 'app/app_bloc_observer.dart';
+import 'core/database/local_database_service.dart';
 
-
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  final databaseService = LocalDatabaseService();
-  await databaseService.init();
-
+  await initializeDateFormatting('es');
+  Intl.defaultLocale = 'es_CO';
+  await LocalDatabaseService.instance.init();
   Bloc.observer = AppBlocObserver();
   runApp(const App());
 }

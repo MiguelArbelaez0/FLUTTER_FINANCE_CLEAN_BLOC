@@ -1,92 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_finance_clean_bloc/features/finance/presentation/bloc/finance_bloc.dart';
-import 'package:flutter_finance_clean_bloc/features/finance/presentation/bloc/finance_event.dart';
-import 'package:flutter_finance_clean_bloc/features/finance/presentation/pages/transaction_form_page.dart';
-
+import 'package:intl/intl.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/enums.dart';
 import '../../domain/entities/transaction.dart';
+import '../bloc/finance_bloc.dart';
+import '../bloc/finance_event.dart';
+import '../pages/transaction_form_page.dart';
 
 class TransactionTile extends StatelessWidget {
+  const TransactionTile({super.key, required this.transaction});
   final FinanceTransaction transaction;
-
-  const TransactionTile({
-    super.key,
-    required this.transaction,
-  });
-
   @override
   Widget build(BuildContext context) {
-    final isIncome = transaction.type == TransactionType.income;
-
-    return ListTile(
-      leading: Icon(
-        isIncome ? Icons.arrow_downward : Icons.arrow_upward,
-        color: isIncome ? Colors.green : Colors.red,
-      ),
-      title: Text(
-        transaction.category,
-        style: const TextStyle(fontWeight: FontWeight.w600),
-      ),
-      subtitle: Text(
-        transaction.description ?? '',
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      trailing: Text(
-        transaction.amount.toStringAsFixed(2),
-        style: TextStyle(
-          color: isIncome ? Colors.green : Colors.red,
-          fontWeight: FontWeight.w600,
+    final income = transaction.type == TransactionType.income;
+    final color = income ? AppColors.income : AppColors.expense;
+    final amount = NumberFormat.currency(
+      locale: 'es_CO',
+      symbol: '\$ ',
+      decimalDigits: 0,
+    ).format(transaction.amount);
+    return Card(
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        leading: CircleAvatar(
+          backgroundColor: color.withValues(alpha: .1),
+          foregroundColor: color,
+          child: Icon(income ? Icons.south_west : Icons.north_east),
         ),
-      ),
-
-      /// TAP → EDITAR
-      onTap: () {
-        Navigator.push(
+        title: Text(
+          transaction.category,
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
+        subtitle: Text(
+          '${transaction.description ?? ''} · ${DateFormat.yMMMd().format(transaction.date)}',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        trailing: Text(
+          '${income ? '+' : '−'}$amount',
+          style: TextStyle(color: color, fontWeight: FontWeight.w700),
+        ),
+        onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => TransactionFormPage(
-              transaction: transaction,
-            ),
+            builder: (_) => TransactionFormPage(transaction: transaction),
           ),
-        );
-      },
-
-      /// LONG PRESS → ELIMINAR
-      onLongPress: () {
-        _showDeleteDialog(context);
-      },
+        ),
+        onLongPress: () => _confirmDelete(context),
+      ),
     );
   }
 
-  void _showDeleteDialog(BuildContext context) {
-    showDialog(
+  Future<void> _confirmDelete(BuildContext context) async {
+    final shouldDelete = await showDialog<bool>(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Delete transaction'),
-        content: const Text(
-          'Are you sure you want to delete this transaction?',
-        ),
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Eliminar movimiento'),
+        content: const Text('¿Quieres eliminar esta transacción?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('Cancelar'),
           ),
-          TextButton(
-            onPressed: () {
-              context
-                  .read<FinanceBloc>()
-                  .add(DeleteTransactionEvent(transaction.id));
-              Navigator.pop(context);
-            },
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: Colors.red),
-            ),
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text('Eliminar'),
           ),
         ],
       ),
     );
+    if (shouldDelete == true && context.mounted) {
+      context.read<FinanceBloc>().add(DeleteTransactionEvent(transaction.id));
+    }
   }
 }

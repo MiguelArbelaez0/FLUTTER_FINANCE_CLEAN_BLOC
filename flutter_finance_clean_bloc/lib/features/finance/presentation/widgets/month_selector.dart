@@ -13,7 +13,7 @@ class MonthSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = DateFormat.yMMMM().format(month);
+    final label = DateFormat.yMMMM('es').format(month);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -21,16 +21,15 @@ class MonthSelector extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
+            tooltip: 'Mes anterior',
             icon: const Icon(Icons.chevron_left),
             onPressed: () {
               onChanged(DateTime(month.year, month.month - 1));
             },
           ),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          Text(label, style: Theme.of(context).textTheme.titleMedium),
           IconButton(
+            tooltip: 'Mes siguiente',
             icon: const Icon(Icons.chevron_right),
             onPressed: () {
               onChanged(DateTime(month.year, month.month + 1));

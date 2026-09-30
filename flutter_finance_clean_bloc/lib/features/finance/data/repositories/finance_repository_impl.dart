@@ -1,31 +1,39 @@
-import 'package:flutter_finance_clean_bloc/features/finance/data/data%20sources/finance_local_datasource.dart';
-
+import '../../../../core/errors/exceptions.dart';
+import '../../../../core/errors/failures.dart';
 import '../../domain/entities/transaction.dart';
 import '../../domain/repositories/finance_repository.dart';
+import '../data_sources/finance_local_datasource.dart';
+import '../models/transaction_model.dart';
 
-
-class FinanceRepositoryImpl implements FinanceRepository {
-  final FinanceLocalDatasource datasource;
-
+final class FinanceRepositoryImpl implements FinanceRepository {
   FinanceRepositoryImpl(this.datasource);
-
-  @override
-  Future<List<FinanceTransaction>> getTransactions() {
-    return datasource.getTransactions();
+  final FinanceLocalDatasource datasource;
+  Future<T> _guard<T>(Future<T> Function() action) async {
+    try {
+      return await action();
+    } on CacheException {
+      throw const CacheFailure();
+    } catch (_) {
+      throw const CacheFailure();
+    }
   }
 
   @override
-  Future<void> addTransaction(FinanceTransaction transaction) {
-    return datasource.addTransaction(transaction);
-  }
-
+  Future<List<FinanceTransaction>> getTransactions() => _guard(
+    () async => (await datasource.getTransactions())
+        .map((model) => model.toEntity())
+        .toList(),
+  );
   @override
-  Future<void> updateTransaction(FinanceTransaction transaction) {
-    return datasource.updateTransaction(transaction);
-  }
-
+  Future<void> addTransaction(FinanceTransaction transaction) => _guard(
+    () => datasource.addTransaction(TransactionModel.fromEntity(transaction)),
+  );
   @override
-  Future<void> deleteTransaction(String id) {
-    return datasource.deleteTransaction(id);
-  }
+  Future<void> updateTransaction(FinanceTransaction transaction) => _guard(
+    () =>
+        datasource.updateTransaction(TransactionModel.fromEntity(transaction)),
+  );
+  @override
+  Future<void> deleteTransaction(String id) =>
+      _guard(() => datasource.deleteTransaction(id));
 }

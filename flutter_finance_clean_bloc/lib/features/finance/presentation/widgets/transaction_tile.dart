@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_finance_clean_bloc/features/finance/presentation/bloc/finance_bloc.dart';
 import 'package:flutter_finance_clean_bloc/features/finance/presentation/bloc/finance_event.dart';
 import 'package:flutter_finance_clean_bloc/features/finance/presentation/pages/transaction_form_page.dart';
+import 'package:flutter_finance_clean_bloc/features/finance/domain/entities/transaction.dart';
 
 import '../../../../core/utils/enums.dart';
-import '../../domain/entities/transaction.dart';
 
 class TransactionTile extends StatelessWidget {
   final FinanceTransaction transaction;

@@ -1,4 +1,4 @@
-import '../../domain/entities/transaction.dart';
+import 'package:flutter_finance_clean_bloc/features/finance/domain/entities/transaction.dart';
 
 abstract class FinanceState {}
 

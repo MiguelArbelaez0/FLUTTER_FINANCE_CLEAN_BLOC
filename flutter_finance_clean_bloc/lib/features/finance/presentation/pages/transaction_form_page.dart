@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_finance_clean_bloc/features/finance/domain/entities/transaction.dart';
 
 import '../../../../core/utils/enums.dart';
-import '../../domain/entities/transaction.dart';
 import '../bloc/finance_bloc.dart';
 import '../bloc/finance_event.dart';
 
@@ -79,7 +79,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<TransactionType>(
-              value: _type,
+              initialValue: _type,
               items: TransactionType.values
                   .map(
                     (type) =>

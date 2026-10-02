@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_finance_clean_bloc/core/use%20cases/usecase.dart';
-import 'package:flutter_finance_clean_bloc/features/finance/domain/entities/transaction.dart';
 import 'package:flutter_finance_clean_bloc/features/finance/domain/use%20cases/add_transaction.dart';
 import 'package:flutter_finance_clean_bloc/features/finance/domain/use%20cases/delete_transaction.dart';
 import 'package:flutter_finance_clean_bloc/features/finance/domain/use%20cases/get_transactions.dart';

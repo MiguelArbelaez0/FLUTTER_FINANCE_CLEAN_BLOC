@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class MonthSelector extends StatelessWidget {
   final DateTime month;
@@ -13,7 +12,21 @@ class MonthSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = DateFormat.yMMMM().format(month);
+    const months = [
+      'enero',
+      'febrero',
+      'marzo',
+      'abril',
+      'mayo',
+      'junio',
+      'julio',
+      'agosto',
+      'septiembre',
+      'octubre',
+      'noviembre',
+      'diciembre',
+    ];
+    final label = '${_capitalize(months[month.month - 1])} ${month.year}';
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -37,4 +50,7 @@ class MonthSelector extends StatelessWidget {
       ),
     );
   }
+
+  String _capitalize(String value) =>
+      '${value[0].toUpperCase()}${value.substring(1)}';
 }

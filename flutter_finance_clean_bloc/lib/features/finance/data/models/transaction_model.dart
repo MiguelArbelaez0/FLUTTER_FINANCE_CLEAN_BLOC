@@ -1,53 +1,28 @@
-import '../../../../core/utils/enums.dart';
 import '../../domain/entities/transaction.dart';
+import '../../../../core/utils/enums.dart';
 
-final class TransactionModel {
-  const TransactionModel({
-    required this.id,
-    required this.amount,
-    required this.type,
-    required this.category,
-    required this.date,
-    this.description,
-  });
-  final String id;
-  final double amount;
-  final TransactionType type;
-  final String category;
-  final DateTime date;
-  final String? description;
-  factory TransactionModel.fromEntity(FinanceTransaction entity) =>
-      TransactionModel(
-        id: entity.id,
-        amount: entity.amount,
-        type: entity.type,
-        category: entity.category,
-        date: entity.date,
-        description: entity.description,
-      );
-  FinanceTransaction toEntity() => FinanceTransaction(
-    id: id,
-    amount: amount,
-    type: type,
-    category: category,
-    date: date,
-    description: description,
-  );
-  factory TransactionModel.fromMap(Map<dynamic, dynamic> map) =>
-      TransactionModel(
-        id: map['id'] as String,
-        amount: (map['amount'] as num).toDouble(),
-        type: TransactionType.values.byName(map['type'] as String),
-        category: map['category'] as String,
-        date: DateTime.parse(map['date'] as String),
-        description: map['description'] as String?,
-      );
-  Map<String, dynamic> toMap() => {
-    'id': id,
-    'amount': amount,
-    'type': type.name,
-    'category': category,
-    'date': date.toIso8601String(),
-    'description': description,
-  };
+class TransactionModel {
+  static Map<String, dynamic> toMap(FinanceTransaction transaction) {
+    return {
+      'id': transaction.id,
+      'amount': transaction.amount,
+      'type': transaction.type.name,
+      'category': transaction.category,
+      'date': transaction.date.toIso8601String(),
+      'description': transaction.description,
+    };
+  }
+
+  static FinanceTransaction fromMap(Map data) {
+    return FinanceTransaction(
+      id: data['id'],
+      amount: data['amount'],
+      type: TransactionType.values.firstWhere(
+        (e) => e.name == data['type'],
+      ),
+      category: data['category'],
+      date: DateTime.parse(data['date']),
+      description: data['description'],
+    );
+  }
 }

@@ -1,10 +1,3 @@
-sealed class Failure {
-  const Failure(this.message);
-  final String message;
-}
+abstract class Failure {}
 
-final class CacheFailure extends Failure {
-  const CacheFailure([
-    super.message = 'No se pudieron guardar o cargar los movimientos.',
-  ]);
-}
+class CacheFailure extends Failure {}

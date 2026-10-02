@@ -1,32 +1,14 @@
-import '../../domain/entities/balance.dart';
 import '../../domain/entities/transaction.dart';
 
-sealed class FinanceState {
-  const FinanceState();
-}
+abstract class FinanceState {}
 
-final class FinanceInitial extends FinanceState {
-  const FinanceInitial();
-}
+class FinanceLoading extends FinanceState {}
 
-final class FinanceLoading extends FinanceState {
-  const FinanceLoading();
-}
-
-final class FinanceLoaded extends FinanceState {
-  const FinanceLoaded({
-    required this.transactions,
-    required this.selectedMonth,
-    required this.balance,
-    this.isSaving = false,
-  });
+class FinanceLoaded extends FinanceState {
   final List<FinanceTransaction> transactions;
   final DateTime selectedMonth;
-  final Balance balance;
-  final bool isSaving;
+
+  FinanceLoaded({required this.transactions, required this.selectedMonth});
 }
 
-final class FinanceError extends FinanceState {
-  const FinanceError(this.message);
-  final String message;
-}
+class FinanceError extends FinanceState {}

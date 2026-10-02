@@ -1,72 +1,94 @@
-# Flutter Finance
+# FLUTTER_FINANCE_CLEAN_BLOC
 
-A personal finance tracker built with Flutter, Dart, BLoC, Clean Architecture, and local Hive persistence.
+## Descripción
 
-## Features
+Aplicación Flutter sencilla para registrar y consultar ingresos y gastos personales. Los movimientos se guardan localmente en el dispositivo.
 
-- Create, edit, and delete income and expense transactions.
-- Browse monthly activity and see income, expenses, and balance.
-- Persist transactions locally with Hive.
-- Responsive Material 3 interface with system light and dark themes.
-- Form validation, loading, empty, and error states.
+## Características
 
-## Architecture
+- Crear, editar y eliminar transacciones.
+- Consultar transacciones agrupadas por el mes seleccionado.
+- Ver ingresos, gastos y balance del mes en el panel principal.
+- Guardar los datos localmente con Hive.
+- Validación básica del formulario: el monto debe ser mayor que cero y la descripción debe tener al menos tres caracteres. El formulario no muestra mensajes de error para estos casos.
 
-The finance feature follows Presentation → Domain and Data → Domain dependency rules. Presentation dispatches events to `FinanceBloc`; the bloc coordinates use cases; use cases depend on the `FinanceRepository` contract; the data implementation maps entities to models and accesses the local datasource. Domain contains no Flutter or Hive imports.
+## Arquitectura
+
+El código está organizado por capas y por funcionalidad dentro de `lib/features/finance`:
+
+- `domain`: entidades, contrato del repositorio y casos de uso.
+- `data`: modelo, fuente de datos local y repositorio.
+- `presentation`: BLoC, páginas y widgets.
+- `lib/core`: utilidades, errores y servicios comunes.
+- `lib/app`: configuración y composición de la aplicación.
+
+`FinanceBloc` carga, agrega, actualiza y elimina transacciones, y cambia el mes seleccionado. El panel calcula y presenta los totales del mes. El archivo `domain/use cases/calculate_balance.dart` está vacío y no se utiliza actualmente.
+
+## Tecnologías
+
+- Flutter y Dart
+- `flutter_bloc` para el estado
+- Hive y `hive_flutter` para persistencia local
+- `intl` para formato de fechas
+- Material 3 mediante el tema de Flutter
+
+## Estructura del proyecto
 
 ```text
 lib/
-├── app/                         # App composition, theme, and BLoC observer
-├── core/                        # Database, errors, shared use case and utilities
-└── features/finance/
-    ├── domain/                  # Entities, repository contract, use cases
-    ├── data/                    # Hive datasource, models, repository implementation
-    └── presentation/            # BLoC, pages, and widgets
+├── app/
+├── core/
+│   ├── errors/
+│   ├── use cases/
+│   └── utils/
+└── features/
+    └── finance/
+        ├── data/
+        │   ├── data sources/
+        │   ├── models/
+        │   └── repositories/
+        ├── domain/
+        │   ├── entities/
+        │   ├── repositories/
+        │   └── use cases/
+        └── presentation/
+            ├── bloc/
+            ├── pages/
+            └── widgets/
 ```
 
-## Technical decisions
+## Persistencia local
 
-- Manual dependency injection keeps the object graph explicit and limited to the application composition root.
-- Hive is initialized once before `runApp`; persistence stays behind the datasource and repository.
-- Monthly navigation filters the already loaded in-memory collection.
-- Repository failures are translated into user-facing messages at the presentation boundary.
-- `ThemeMode.system` selects the Material 3 light or dark theme.
+La aplicación inicializa Hive al arrancar y utiliza la caja `transactions_box`. La fuente de datos convierte los registros almacenados al modelo de transacción y los entrega al repositorio.
 
-## Requirements
+## Testing
 
-- Flutter SDK compatible with the Dart SDK constraint in `pubspec.yaml`.
-- Web, Android, iOS, Windows, macOS, or Linux tooling for the selected target.
+Actualmente hay una prueba unitaria en `test/finance_balance_test.dart` que comprueba operaciones aritméticas de balance. No hay pruebas de BLoC, widgets ni integración.
 
-## Run
+## Instalación
+
+Desde la raíz del repositorio clonado:
 
 ```sh
+cd flutter_finance_clean_bloc
 flutter pub get
+```
+
+## Ejecución
+
+```sh
 flutter run
 ```
 
-## Test and analyze
+## Tests
 
 ```sh
-flutter analyze
 flutter test
 ```
 
-## Build
+## Futuras mejoras
 
-```sh
-flutter build web
-```
-
-## Screenshots
-
-Screenshots can be added here after capturing the app on supported form factors.
-
-## CI
-
-GitHub Actions runs dependency resolution, static analysis, unit/widget tests, and a web build on pushes and pull requests.
-
-## Future improvements
-
-- Add export and backup options.
-- Add configurable currencies and category management.
-- Expand repository and BLoC failure-path coverage.
+- Implementar el caso de uso de cálculo de balance y trasladar la lógica fuera de la página.
+- Añadir pruebas para el BLoC, formularios, widgets y persistencia.
+- Mostrar mensajes de validación claros en el formulario.
+- Añadir categorías configurables y filtros adicionales.

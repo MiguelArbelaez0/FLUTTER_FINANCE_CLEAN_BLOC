@@ -1,4 +1,4 @@
-import 'package:flutter_finance_clean_bloc/core/use_cases/usecase.dart';
+import 'package:flutter_finance_clean_bloc/core/use%20cases/usecase.dart';
 
 import '../entities/transaction.dart';
 import '../repositories/finance_repository.dart';

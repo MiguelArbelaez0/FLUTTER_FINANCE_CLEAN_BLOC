@@ -1,94 +1,171 @@
-# FLUTTER_FINANCE_CLEAN_BLOC
+# Flutter Finance Clean BLoC
 
-## Descripción
+A Flutter personal finance application built with Dart, BLoC, Clean Architecture principles, and local data persistence using Hive.
 
-Aplicación Flutter sencilla para registrar y consultar ingresos y gastos personales. Los movimientos se guardan localmente en el dispositivo.
+## 📱 Overview
 
-## Características
+Flutter Finance Clean BLoC is a finance management application focused on recording and organizing personal transactions.
 
-- Crear, editar y eliminar transacciones.
-- Consultar transacciones agrupadas por el mes seleccionado.
-- Ver ingresos, gastos y balance del mes en el panel principal.
-- Guardar los datos localmente con Hive.
-- Validación básica del formulario: el monto debe ser mayor que cero y la descripción debe tener al menos tres caracteres. El formulario no muestra mensajes de error para estos casos.
+The project demonstrates how to structure a Flutter application with separated presentation, domain, and data responsibilities while using BLoC for state management and Hive for local persistence.
 
-## Arquitectura
+## 🚀 Features
 
-El código está organizado por capas y por funcionalidad dentro de `lib/features/finance`:
+- Create financial transactions
+- View recorded transactions
+- Update transaction information
+- Delete transactions
+- Calculate monthly totals
+- Calculate balance from stored transactions
+- Persist financial data locally
+- Reactive state management with BLoC
+- Separation of application responsibilities
+- Clean Architecture principles
 
-- `domain`: entidades, contrato del repositorio y casos de uso.
-- `data`: modelo, fuente de datos local y repositorio.
-- `presentation`: BLoC, páginas y widgets.
-- `lib/core`: utilidades, errores y servicios comunes.
-- `lib/app`: configuración y composición de la aplicación.
+## 🏗️ Architecture
 
-`FinanceBloc` carga, agrega, actualiza y elimina transacciones, y cambia el mes seleccionado. El panel calcula y presenta los totales del mes. El archivo `domain/use cases/calculate_balance.dart` está vacío y no se utiliza actualmente.
+The application follows a Clean Architecture-inspired structure:
 
-## Tecnologías
+```text
+Presentation
+     ↓
+BLoC
+     ↓
+Use Cases
+     ↓
+Repository
+     ↓
+Local Data Source
+     ↓
+Hive
+```
 
-- Flutter y Dart
-- `flutter_bloc` para el estado
-- Hive y `hive_flutter` para persistencia local
-- `intl` para formato de fechas
-- Material 3 mediante el tema de Flutter
+The architecture separates the user interface and state management from business logic and data persistence.
 
-## Estructura del proyecto
+## 🧩 Technologies
+
+| Technology | Usage |
+|---|---|
+| Flutter | Application framework |
+| Dart | Programming language |
+| flutter_bloc | State management |
+| BLoC | Business/application state |
+| Hive | Local persistence |
+| Equatable | Value equality |
+| Clean Architecture | Application organization |
+| Repository Pattern | Data abstraction |
+
+## 💰 Transaction Management
+
+The application allows users to manage financial transactions locally.
+
+Transactions can be created, viewed, updated, and deleted through the application interface.
+
+Each transaction contributes to the financial calculations used to display the user's current and monthly financial information.
+
+## 📊 Financial Calculations
+
+The application includes calculations for:
+
+- Total income
+- Total expenses
+- Monthly totals
+- Current balance
+
+The calculations are based on the transactions stored in the local database.
+
+## 💾 Local Persistence
+
+Hive is used to persist transaction data locally.
+
+This allows financial records to remain available between application sessions without requiring a remote backend.
+
+## ⚡ State Management
+
+BLoC is responsible for managing application state and coordinating changes between the presentation layer and the domain/data layers.
+
+This keeps business operations separated from UI components and makes state transitions easier to reason about.
+
+## 📂 Project Structure
+
+The project is organized around the main responsibilities of the application:
 
 ```text
 lib/
-├── app/
 ├── core/
-│   ├── errors/
-│   ├── use cases/
-│   └── utils/
-└── features/
-    └── finance/
-        ├── data/
-        │   ├── data sources/
-        │   ├── models/
-        │   └── repositories/
-        ├── domain/
-        │   ├── entities/
-        │   ├── repositories/
-        │   └── use cases/
-        └── presentation/
-            ├── bloc/
-            ├── pages/
-            └── widgets/
+├── data/
+├── domain/
+└── presentation/
 ```
 
-## Persistencia local
+### Presentation
 
-La aplicación inicializa Hive al arrancar y utiliza la caja `transactions_box`. La fuente de datos convierte los registros almacenados al modelo de transacción y los entrega al repositorio.
+Contains screens, widgets, and BLoC state management.
 
-## Testing
+### Domain
 
-Actualmente hay una prueba unitaria en `test/finance_balance_test.dart` que comprueba operaciones aritméticas de balance. No hay pruebas de BLoC, widgets ni integración.
+Contains business entities, repository contracts, and use cases.
 
-## Instalación
+### Data
 
-Desde la raíz del repositorio clonado:
+Contains local data access, models, and repository implementations.
 
-```sh
-cd flutter_finance_clean_bloc
+### Core
+
+Contains shared application functionality and utilities.
+
+## ⚙️ Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/MiguelArbelaez0/FLUTTER_FINANCE_CLEAN_BLOC.git
+cd FLUTTER_FINANCE_CLEAN_BLOC
+```
+
+### 2. Install dependencies
+
+```bash
 flutter pub get
 ```
 
-## Ejecución
+### 3. Run the application
 
-```sh
+```bash
 flutter run
 ```
 
-## Tests
+Make sure Flutter and Dart are correctly installed and configured on your development environment.
 
-```sh
-flutter test
-```
+## 🎯 What This Project Demonstrates
 
-## Futuras mejoras
+This project demonstrates practical experience with:
 
-- Implementar el caso de uso de cálculo de balance y trasladar la lógica fuera de la página.
-- Añadir pruebas para el BLoC, formularios, widgets y persistencia.
-- Mostrar mensajes de validación claros en el formulario.
-- Añadir categorías configurables y filtros adicionales.
+- Flutter and Dart
+- BLoC state management
+- Clean Architecture principles
+- Repository Pattern
+- Use Case design
+- Local database persistence
+- Hive
+- CRUD operations
+- Financial calculations
+- Separation of concerns
+
+## 🧪 Testing
+
+The project includes testing for core application functionality.
+
+The separation between presentation, domain, and data layers also provides a structure that can be tested independently.
+
+## 📌 Project Status
+
+The project is a completed academic/personal development project created to practice Flutter application architecture, state management, local persistence, and financial data handling.
+
+## 👨‍💻 Author
+
+**Miguel Arbeláez Vallejo**
+
+Software Developer | Flutter / Dart | Full-Stack Development
+
+- GitHub: https://github.com/MiguelArbelaez0
+- LinkedIn: https://www.linkedin.com/in/miguel-arbelaez-v-57719542b/

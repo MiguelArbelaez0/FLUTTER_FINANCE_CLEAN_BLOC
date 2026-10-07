@@ -1,10 +1,10 @@
 # Flutter Finance Clean BLoC
 
-A Flutter personal finance application built with Dart, BLoC, Clean Architecture principles, and local data persistence using Hive.
+A Flutter personal finance application built with Dart, BLoC, Clean Architecture principles, and local-first data persistence using Hive.
 
 ## 📱 Overview
 
-Flutter Finance Clean BLoC is a finance management application focused on recording and organizing personal transactions.
+Flutter Finance Clean BLoC is a local-first finance management application focused on recording, organizing, and calculating personal financial transactions.
 
 The project demonstrates how to structure a Flutter application with separated presentation, domain, and data responsibilities while using BLoC for state management and Hive for local persistence.
 
@@ -50,8 +50,7 @@ The architecture separates the user interface and state management from business
 | flutter_bloc | State management |
 | BLoC | Business/application state |
 | Hive | Local persistence |
-| Equatable | Value equality |
-| Clean Architecture | Application organization |
+| Clean Architecture principles | Application organization |
 | Repository Pattern | Data abstraction |
 
 ## 💰 Transaction Management
@@ -77,7 +76,7 @@ The calculations are based on the transactions stored in the local database.
 
 Hive is used to persist transaction data locally.
 
-This allows financial records to remain available between application sessions without requiring a remote backend.
+This local-first approach keeps financial records available between application sessions without requiring a remote backend or network connection for the core transaction workflow.
 
 ## ⚡ State Management
 
@@ -159,13 +158,15 @@ The separation between presentation, domain, and data layers also provides a str
 
 ## 📌 Project Status
 
-The project is a completed academic/personal development project created to practice Flutter application architecture, state management, local persistence, and financial data handling.
+**Completed portfolio project.**
+
+The project was developed to demonstrate Flutter application architecture, BLoC state management, local-first persistence with Hive, CRUD workflows, and financial data calculations.
 
 ## 👨‍💻 Author
 
 **Miguel Arbeláez Vallejo**
 
-Software Developer | Flutter / Dart | Full-Stack Development
+Software Developer | Flutter & Dart | Full-Stack | Backend | AI/Data
 
 - GitHub: https://github.com/MiguelArbelaez0
 - LinkedIn: https://www.linkedin.com/in/miguel-arbelaez-v-57719542b/

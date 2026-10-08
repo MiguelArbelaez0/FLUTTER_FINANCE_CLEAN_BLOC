@@ -1,92 +1,82 @@
 # Flutter Finance Clean BLoC
 
-A Flutter personal finance application built with Dart, BLoC, Clean Architecture principles, and local-first data persistence using Hive.
+Aplicación móvil de finanzas personales desarrollada con Flutter y Dart, utilizando BLoC, principios de Clean Architecture y persistencia local con Hive.
 
-## 📱 Overview
+## 📱 Descripción general
 
-Flutter Finance Clean BLoC is a local-first finance management application focused on recording, organizing, and calculating personal financial transactions.
+Flutter Finance Clean BLoC es una aplicación de gestión financiera local para registrar, organizar y calcular transacciones personales.
 
-The project demonstrates how to structure a Flutter application with separated presentation, domain, and data responsibilities while using BLoC for state management and Hive for local persistence.
+El proyecto demuestra cómo separar presentación, dominio y datos mientras BLoC gestiona el estado y Hive mantiene la información de forma local.
 
-## 🚀 Features
+## 🚀 Funcionalidades
 
-- Create financial transactions
-- View recorded transactions
-- Update transaction information
-- Delete transactions
-- Calculate monthly totals
-- Calculate balance from stored transactions
-- Persist financial data locally
-- Reactive state management with BLoC
-- Separation of application responsibilities
-- Clean Architecture principles
+- Crear transacciones financieras.
+- Consultar transacciones.
+- Actualizar información.
+- Eliminar transacciones.
+- Calcular totales mensuales.
+- Calcular el saldo.
+- Persistir información localmente.
+- Gestión reactiva con BLoC.
+- Separación de responsabilidades.
+- Principios de Clean Architecture.
 
-## 🏗️ Architecture
-
-The application follows a Clean Architecture-inspired structure:
+## 🏗️ Arquitectura
 
 ```text
-Presentation
+Presentación
      ↓
 BLoC
      ↓
-Use Cases
+Casos de uso
      ↓
-Repository
+Repositorio
      ↓
-Local Data Source
+Fuente de datos local
      ↓
 Hive
 ```
 
-The architecture separates the user interface and state management from business logic and data persistence.
+La arquitectura separa la interfaz y la gestión de estado de la lógica de negocio y la persistencia.
 
-## 🧩 Technologies
+## 🧩 Tecnologías
 
-| Technology | Usage |
+| Tecnología | Uso |
 |---|---|
-| Flutter | Application framework |
-| Dart | Programming language |
-| flutter_bloc | State management |
-| BLoC | Business/application state |
-| Hive | Local persistence |
-| Clean Architecture principles | Application organization |
-| Repository Pattern | Data abstraction |
+| Flutter | Desarrollo de la aplicación |
+| Dart | Lenguaje de programación |
+| flutter_bloc | Gestión de estado |
+| BLoC | Estado de la aplicación |
+| Hive | Persistencia local |
+| Clean Architecture | Organización de la aplicación |
+| Repository Pattern | Abstracción de datos |
 
-## 💰 Transaction Management
+## 💰 Gestión de transacciones
 
-The application allows users to manage financial transactions locally.
+La aplicación permite crear, consultar, actualizar y eliminar transacciones desde la interfaz.
 
-Transactions can be created, viewed, updated, and deleted through the application interface.
+Cada transacción participa en los cálculos financieros utilizados para mostrar la información actual y mensual.
 
-Each transaction contributes to the financial calculations used to display the user's current and monthly financial information.
+## 📊 Cálculos financieros
 
-## 📊 Financial Calculations
+Incluye:
 
-The application includes calculations for:
+- Total de ingresos.
+- Total de gastos.
+- Totales mensuales.
+- Saldo actual.
 
-- Total income
-- Total expenses
-- Monthly totals
-- Current balance
+Los cálculos se realizan sobre las transacciones almacenadas localmente.
 
-The calculations are based on the transactions stored in the local database.
+## 💾 Persistencia local
 
-## 💾 Local Persistence
+Hive permite conservar las transacciones entre sesiones sin requerir un backend remoto para el flujo principal.
 
-Hive is used to persist transaction data locally.
+## ⚡ Gestión de estado
 
-This local-first approach keeps financial records available between application sessions without requiring a remote backend or network connection for the core transaction workflow.
+BLoC administra el estado y coordina los cambios entre presentación, dominio y datos, manteniendo las operaciones separadas de la interfaz.
 
-## ⚡ State Management
-
-BLoC is responsible for managing application state and coordinating changes between the presentation layer and the domain/data layers.
-
-This keeps business operations separated from UI components and makes state transitions easier to reason about.
-
-## 📂 Project Structure
-
-The project is organized around the main responsibilities of the application:
+## 📂 Estructura
 
 ```text
 lib/
@@ -96,77 +86,66 @@ lib/
 └── presentation/
 ```
 
-### Presentation
+### Presentación
+Pantallas, widgets y gestión del estado con BLoC.
 
-Contains screens, widgets, and BLoC state management.
+### Dominio
+Entidades, contratos de repositorio y casos de uso.
 
-### Domain
-
-Contains business entities, repository contracts, and use cases.
-
-### Data
-
-Contains local data access, models, and repository implementations.
+### Datos
+Acceso local, modelos e implementaciones de repositorios.
 
 ### Core
+Funcionalidades compartidas y utilidades.
 
-Contains shared application functionality and utilities.
+## ⚙️ Instalación
 
-## ⚙️ Installation
-
-### 1. Clone the repository
+### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/MiguelArbelaez0/FLUTTER_FINANCE_CLEAN_BLOC.git
 cd FLUTTER_FINANCE_CLEAN_BLOC
 ```
 
-### 2. Install dependencies
+### 2. Instalar dependencias
 
 ```bash
 flutter pub get
 ```
 
-### 3. Run the application
+### 3. Ejecutar
 
 ```bash
 flutter run
 ```
 
-Make sure Flutter and Dart are correctly installed and configured on your development environment.
+## 🎯 Qué demuestra este proyecto
 
-## 🎯 What This Project Demonstrates
+- Flutter y Dart.
+- Gestión de estado con BLoC.
+- Principios de Clean Architecture.
+- Repository Pattern.
+- Casos de uso.
+- Persistencia local.
+- Hive.
+- Operaciones CRUD.
+- Cálculos financieros.
+- Separación de responsabilidades.
 
-This project demonstrates practical experience with:
+## 🧪 Pruebas
 
-- Flutter and Dart
-- BLoC state management
-- Clean Architecture principles
-- Repository Pattern
-- Use Case design
-- Local database persistence
-- Hive
-- CRUD operations
-- Financial calculations
-- Separation of concerns
+El proyecto incluye pruebas de funcionalidades principales.
 
-## 🧪 Testing
+La separación entre presentación, dominio y datos facilita probar las capas de forma independiente.
 
-The project includes testing for core application functionality.
+## 📌 Estado del proyecto
 
-The separation between presentation, domain, and data layers also provides a structure that can be tested independently.
+**Proyecto de portafolio terminado.**
 
-## 📌 Project Status
+Desarrollado para demostrar arquitectura de aplicaciones Flutter, gestión de estado con BLoC, persistencia local con Hive, operaciones CRUD y cálculos financieros.
 
-**Completed portfolio project.**
-
-The project was developed to demonstrate Flutter application architecture, BLoC state management, local-first persistence with Hive, CRUD workflows, and financial data calculations.
-
-## 👨‍💻 Author
+## 👨‍💻 Autor
 
 **Miguel Arbeláez Vallejo**
 
-Software Developer | Flutter & Dart | Full-Stack | Backend | AI/Data
-
-- GitHub: https://github.com/MiguelArbelaez0
-- LinkedIn: https://www.linkedin.com/in/miguel-arbelaez-v-57719542b/
+Desarrollador de Software | Flutter y Dart | Desarrollo integral | Backend | IA y Datos

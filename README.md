@@ -70,7 +70,7 @@ Los cálculos se realizan sobre las transacciones almacenadas localmente.
 
 ## 💾 Persistencia local
 
-Hive permite conservar las transacciones entre sesiones sin requerir un backend remoto para el flujo principal.
+Hive permite conservar las transacciones entre sesiones sin requerir un servidor remoto para el flujo principal.
 
 ## ⚡ Gestión de estado
 
@@ -148,4 +148,4 @@ Desarrollado para demostrar arquitectura de aplicaciones Flutter, gestión de es
 
 **Miguel Arbeláez Vallejo**
 
-Desarrollador de Software | Flutter y Dart | Desarrollo integral | Backend | IA y Datos
+Desarrollador de Software | Flutter y Dart | Desarrollo integral | Servidor | IA y Datos

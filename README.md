@@ -148,4 +148,4 @@ Desarrollado para demostrar arquitectura de aplicaciones Flutter, gestión de es
 
 **Miguel Arbeláez Vallejo**
 
-Desarrollador de Software | Flutter y Dart | Desarrollo integral | Servidor | IA y Datos
+Flutter & Dart · Full-Stack · Backend · AI/Data

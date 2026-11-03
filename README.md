@@ -1,11 +1,10 @@
 # Flutter Finance Clean BLoC
 
-> **Resumen para evaluación técnica**  
+> **En resumen**  
 > **Stack:** Flutter · Dart · BLoC · Hive  
-> **Evidencia:** Demuestra CRUD de transacciones, lógica de saldo y persistencia local mediante capas.  
-> **Código para revisar:** `lib/features/finance/domain/use cases/`, `lib/features/finance/presentation/bloc/`, `test/`.  
-> **Estado:** revisión documental; pruebas y despliegue no verificados.
-
+> **Funcionalidad:** CRUD de transacciones, lógica de saldo y persistencia local mediante capas.  
+> **Código principal:** `lib/features/finance/domain/use cases/`, `lib/features/finance/presentation/bloc/`, `test/`.  
+> **Pruebas:** ejecución no verificada.
 
 Aplicación móvil de finanzas personales desarrollada con Flutter y Dart, utilizando BLoC, principios de Clean Architecture y persistencia local con Hive.
 
@@ -159,8 +158,7 @@ Flutter & Dart · Full-Stack · Backend · AI/Data
 
 ---
 
-## Estado técnico y limitaciones
+## Requisitos y limitaciones
 
-`pubspec.yaml` declara `flutter_bloc`, `hive`, `hive_flutter` e `intl`. El código contiene casos de uso para agregar, actualizar, eliminar y consultar transacciones y calcular saldos. Se encontró `test/finance_balance_test.dart`, sin ejecución de pruebas durante esta auditoría.
+`pubspec.yaml` declara `flutter_bloc`, `hive`, `hive_flutter` e `intl`. El código contiene casos de uso para agregar, actualizar, eliminar y consultar transacciones y calcular saldos. Se encontró `test/finance_balance_test.dart`, con ejecución pendiente de verificación.
 
-**Verificación:** análisis estático del repositorio. No se han comprobado aquí compilación, pruebas automatizadas, despliegue ni seguridad dinámica.

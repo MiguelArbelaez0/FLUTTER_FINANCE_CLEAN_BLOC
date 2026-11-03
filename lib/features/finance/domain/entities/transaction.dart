@@ -1,3 +1,4 @@
+import '../../../../core/utils/money.dart';
 import '../../../../core/utils/enums.dart';
 
 class FinanceTransaction {
@@ -15,5 +16,15 @@ class FinanceTransaction {
     required this.category,
     required this.date,
     this.description,
-  });
+  }) {
+    if (id.trim().isEmpty ||
+        category.trim().isEmpty ||
+        !amount.isFinite ||
+        amount <= 0 ||
+        amount > Money.maxAmount) {
+      throw ArgumentError('Movimiento inválido');
+    }
+  }
+
+  int get amountCents => Money.cents(amount);
 }

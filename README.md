@@ -66,7 +66,11 @@ flutter build web
 flutter build apk --debug
 ```
 
-Las pruebas cubren precisión monetaria, entradas inválidas, balance vacío y negativo, CRUD real con Hive, reapertura de almacenamiento, compatibilidad de registros, datos corruptos, filtros por año y mes, errores y orden de eventos BLoC, estado vacío y guardado desde el formulario.
+Las 10 pruebas verificadas cubren precisión monetaria, entradas inválidas, balance vacío y negativo, CRUD real con Hive, reapertura de almacenamiento, compatibilidad de registros, datos corruptos, filtros por año y mes, errores y orden de eventos BLoC, estado vacío y guardado desde el formulario. `flutter analyze` finaliza sin incidencias y la compilación web está verificada.
+
+La compilación `flutter build apk --debug` también está verificada con Eclipse Temurin **17.0.20.1**, Gradle **8.14**, Android Gradle Plugin **8.11.1** y Kotlin **2.2.20**. El APK se genera en `build/app/outputs/flutter-apk/app-debug.apk`; se comprobaron su integridad ZIP, alineación y firma v2 con certificado Android Debug. Es una compilación de desarrollo, sin validación de ejecución en Android.
+
+Para esta compilación se reutilizó un JDK 17 portátil, sin copiarlo ni cambiar la configuración global: `JAVA_HOME` y `PATH` se establecieron solo en el proceso, y Flutter recibió `jdk-dir` mediante un archivo `.flutter_settings` en un `APPDATA` aislado bajo `.dart_tool`. Cambiar únicamente `JAVA_HOME` puede no bastar si Flutter selecciona el Java de Android Studio.
 
 ## Limitaciones
 
@@ -74,7 +78,9 @@ Las pruebas cubren precisión monetaria, entradas inválidas, balance vacío y n
 - La persistencia usa el esquema numérico existente; la aritmética del balance se realiza en centavos.
 - No hay recuperación automática de archivos Hive dañados ni administración de categorías.
 - No hay pruebas en dispositivos físicos ni compilaciones verificadas de iOS, macOS, Linux o Windows.
-- La compilación APK requiere resolver la incompatibilidad del Java 25 local con Gradle 8.14 y completar las herramientas/licencias Android.
+- El Java 25 predeterminado del entorno es incompatible con Gradle 8.14; la compilación comprobada utiliza JDK 17 mediante ajustes temporales del proceso.
+- Faltan Android `cmdline-tools`; aunque el SDK instalado permite generar el APK, `flutter doctor` no puede verificar el estado completo de licencias. No se instalaron herramientas ni se aceptaron licencias durante esta validación.
+- Flutter advierte que las versiones actuales de Gradle, Android Gradle Plugin y Kotlin dejarán de estar admitidas en una versión futura; su actualización debe validarse por separado.
 - La configuración Android de publicación conserva identificador de ejemplo y firma de depuración; debe prepararse antes de distribuir una versión de producción.
 
 ## Autor

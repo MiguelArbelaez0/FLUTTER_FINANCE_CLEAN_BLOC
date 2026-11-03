@@ -81,7 +81,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
     final transaction = FinanceTransaction(
       id:
           widget.transaction?.id ??
-          '${DateTime.now().microsecondsSinceEpoch}-${Random.secure().nextInt(1 << 32)}',
+          '${DateTime.now().microsecondsSinceEpoch}-${Random.secure().nextInt(1 << 30)}',
       amount: amount,
       type: _type,
       category: _category,

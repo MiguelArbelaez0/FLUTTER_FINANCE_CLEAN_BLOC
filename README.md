@@ -1,164 +1,87 @@
 # Flutter Finance Clean BLoC
 
-> **En resumen**  
-> **Stack:** Flutter · Dart · BLoC · Hive  
-> **Funcionalidad:** CRUD de transacciones, lógica de saldo y persistencia local mediante capas.  
-> **Código principal:** `lib/features/finance/domain/use cases/`, `lib/features/finance/presentation/bloc/`, `test/`.  
-> **Pruebas:** ejecución no verificada.
+Aplicación personal de finanzas desarrollada por Miguel Arbeláez Vallejo con Flutter, Dart, BLoC y persistencia local mediante Hive.
 
-Aplicación móvil de finanzas personales desarrollada con Flutter y Dart, utilizando BLoC, principios de Clean Architecture y persistencia local con Hive.
+## Funcionalidades
 
-## 📱 Descripción general
+- Crear, consultar, editar y eliminar ingresos y gastos.
+- Registrar categoría, descripción, importe y fecha de cada movimiento.
+- Consultar ingresos, gastos y saldo del mes seleccionado, incluyendo otros años.
+- Conservar movimientos entre sesiones en el mismo dispositivo o navegador.
+- Confirmar eliminaciones y mostrar errores de carga o escritura.
 
-Flutter Finance Clean BLoC es una aplicación de gestión financiera local para registrar, organizar y calcular transacciones personales.
+## Tecnologías y requisitos
 
-El proyecto demuestra cómo separar presentación, dominio y datos mientras BLoC gestiona el estado y Hive mantiene la información de forma local.
+Flutter, Dart, `flutter_bloc`, `hive`, `hive_flutter`, `intl` y `cupertino_icons` (iconos Cupertino utilizados por componentes de Flutter). Las pruebas utilizan `flutter_test` y las reglas de análisis, `flutter_lints`.
 
-## 🚀 Funcionalidades
+El proyecto requiere Dart compatible con `^3.10.7`. La validación local se realizó con Flutter **3.47.5** y Dart **3.13.4**; las versiones resueltas están en `pubspec.lock`.
 
-- Crear transacciones financieras.
-- Consultar transacciones.
-- Actualizar información.
-- Eliminar transacciones.
-- Calcular totales mensuales.
-- Calcular el saldo.
-- Persistir información localmente.
-- Gestión reactiva con BLoC.
-- Separación de responsabilidades.
-- Principios de Clean Architecture.
+## Arquitectura
 
-## 🏗️ Arquitectura
-
-```text
-Presentación
-     ↓
-BLoC
-     ↓
-Casos de uso
-     ↓
-Repositorio
-     ↓
-Fuente de datos local
-     ↓
-Hive
-```
-
-La arquitectura separa la interfaz y la gestión de estado de la lógica de negocio y la persistencia.
-
-## 🧩 Tecnologías
-
-| Tecnología | Uso |
-|---|---|
-| Flutter | Desarrollo de la aplicación |
-| Dart | Lenguaje de programación |
-| flutter_bloc | Gestión de estado |
-| BLoC | Estado de la aplicación |
-| Hive | Persistencia local |
-| Clean Architecture | Organización de la aplicación |
-| Repository Pattern | Abstracción de datos |
-
-## 💰 Gestión de transacciones
-
-La aplicación permite crear, consultar, actualizar y eliminar transacciones desde la interfaz.
-
-Cada transacción participa en los cálculos financieros utilizados para mostrar la información actual y mensual.
-
-## 📊 Cálculos financieros
-
-Incluye:
-
-- Total de ingresos.
-- Total de gastos.
-- Totales mensuales.
-- Saldo actual.
-
-Los cálculos se realizan sobre las transacciones almacenadas localmente.
-
-## 💾 Persistencia local
-
-Hive permite conservar las transacciones entre sesiones sin requerir un servidor remoto para el flujo principal.
-
-## ⚡ Gestión de estado
-
-BLoC administra el estado y coordina los cambios entre presentación, dominio y datos, manteniendo las operaciones separadas de la interfaz.
-
-## 📂 Estructura
+La presentación envía eventos a BLoC; este coordina casos de uso y el contrato del repositorio. La implementación del repositorio delega la persistencia a una fuente de datos Hive. El cálculo de balance pertenece al dominio.
 
 ```text
 lib/
-├── core/
-├── data/
-├── domain/
-└── presentation/
+├── app/                         # Tema y composición de dependencias
+├── core/                        # Persistencia, utilidades y contratos comunes
+└── features/finance/
+    ├── data/                    # Modelos, fuente local y repositorio
+    ├── domain/                  # Entidades, contratos y casos de uso
+    └── presentation/            # BLoC, pantallas y widgets
+
+test/finance_balance_test.dart   # Dominio, Hive, BLoC y widgets
 ```
 
-### Presentación
-Pantallas, widgets y gestión del estado con BLoC.
+Los eventos se procesan en orden para evitar escrituras concurrentes desde la interfaz. El mes seleccionado se conserva al modificar movimientos. El formulario espera la confirmación de persistencia antes de cerrarse.
 
-### Dominio
-Entidades, contratos de repositorio y casos de uso.
-
-### Datos
-Acceso local, modelos e implementaciones de repositorios.
-
-### Core
-Funcionalidades compartidas y utilidades.
-
-## ⚙️ Instalación
-
-### 1. Clonar el repositorio
+## Instalación y ejecución
 
 ```bash
 git clone https://github.com/MiguelArbelaez0/FLUTTER_FINANCE_CLEAN_BLOC.git
 cd FLUTTER_FINANCE_CLEAN_BLOC
-```
-
-### 2. Instalar dependencias
-
-```bash
 flutter pub get
-```
-
-### 3. Ejecutar
-
-```bash
 flutter run
 ```
 
-## 🎯 Qué demuestra este proyecto
+Para navegador: `flutter run -d chrome`. Android requiere SDK, licencias y una versión de Java compatible con Gradle. Los archivos de plataforma existen para Android, iOS, web, Windows, macOS y Linux; su presencia no garantiza que todas las plataformas estén verificadas.
 
-- Flutter y Dart.
-- Gestión de estado con BLoC.
-- Principios de Clean Architecture.
-- Repository Pattern.
-- Casos de uso.
-- Persistencia local.
-- Hive.
-- Operaciones CRUD.
-- Cálculos financieros.
-- Separación de responsabilidades.
+## Importes y persistencia
 
-## 🧪 Pruebas
+Los nuevos importes deben ser positivos, admitir como máximo dos decimales y no superar 1.000.000.000 por movimiento. Se acepta coma o punto decimal, sin separadores de miles ni notación científica. Los cálculos suman centavos enteros y la interfaz muestra decimales.
 
-El proyecto incluye pruebas de funcionalidades principales.
+Hive utiliza la caja `transactions_box` y conserva el formato de mapas existente. Los registros antiguos con importes enteros también se leen. Si un registro antiguo tiene más de dos decimales, se conserva su valor almacenado y se redondea a centavos para el balance; editarlo requiere un importe de hasta dos decimales. No se realiza migración ni borrado automático.
 
-La separación entre presentación, dominio y datos facilita probar las capas de forma independiente.
+Si un registro es inválido, la carga falla de forma visible y conserva los datos para su recuperación. Los identificadores duplicados se rechazan para evitar sobrescrituras involuntarias.
 
-## 📌 Estado del proyecto
+La información permanece en el almacenamiento local de la aplicación; en web depende del navegador y del origen. Borrar datos del navegador o desinstalar la aplicación puede eliminarla. No hay sincronización, exportación, respaldo automático, autenticación ni cifrado configurado.
 
-**Proyecto de portafolio terminado.**
+## Pruebas y validación
 
-Desarrollado para demostrar arquitectura de aplicaciones Flutter, gestión de estado con BLoC, persistencia local con Hive, operaciones CRUD y cálculos financieros.
+```bash
+flutter pub get
+dart format --output=none --set-exit-if-changed lib test
+flutter analyze
+flutter test
+flutter build web
+flutter build apk --debug
+```
 
-## 👨‍💻 Autor
+Las pruebas cubren precisión monetaria, entradas inválidas, balance vacío y negativo, CRUD real con Hive, reapertura de almacenamiento, compatibilidad de registros, datos corruptos, filtros por año y mes, errores y orden de eventos BLoC, estado vacío y guardado desde el formulario.
+
+## Limitaciones
+
+- Una sola unidad monetaria, mostrada con formato colombiano; no hay conversión de divisas.
+- La persistencia usa el esquema numérico existente; la aritmética del balance se realiza en centavos.
+- No hay recuperación automática de archivos Hive dañados ni administración de categorías.
+- No hay pruebas en dispositivos físicos ni compilaciones verificadas de iOS, macOS, Linux o Windows.
+- La compilación APK requiere resolver la incompatibilidad del Java 25 local con Gradle 8.14 y completar las herramientas/licencias Android.
+- La configuración Android de publicación conserva identificador de ejemplo y firma de depuración; debe prepararse antes de distribuir una versión de producción.
+
+## Autor
 
 **Miguel Arbeláez Vallejo**
 
 Flutter & Dart · Full-Stack · Backend · AI/Data
 
----
-
-## Requisitos y limitaciones
-
-`pubspec.yaml` declara `flutter_bloc`, `hive`, `hive_flutter` e `intl`. El código contiene casos de uso para agregar, actualizar, eliminar y consultar transacciones y calcular saldos. Se encontró `test/finance_balance_test.dart`, con ejecución pendiente de verificación.
-
+- [GitHub](https://github.com/MiguelArbelaez0)
+- [LinkedIn](https://www.linkedin.com/in/miguel-arbelaez-v-57719542b/)

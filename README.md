@@ -16,18 +16,30 @@ Flutter, Dart, `flutter_bloc`, `hive`, `hive_flutter`, `intl` y `cupertino_icons
 
 El proyecto requiere Dart compatible con `^3.10.7`. La validación local se realizó con Flutter **3.47.5** y Dart **3.13.4**; las versiones resueltas están en `pubspec.lock`.
 
-## Arquitectura
+## Clean Architecture + BLoC
 
 La presentación envía eventos a BLoC; este coordina casos de uso y el contrato del repositorio. La implementación del repositorio delega la persistencia a una fuente de datos Hive. El cálculo de balance pertenece al dominio.
 
 ```text
 lib/
 ├── app/                         # Tema y composición de dependencias
-├── core/                        # Persistencia, utilidades y contratos comunes
+├── core/
+│   ├── errors/
+│   ├── use_cases/               # Contrato de casos de uso
+│   └── utils/                   # Importes, fechas y acceso a Hive
 └── features/finance/
-    ├── data/                    # Modelos, fuente local y repositorio
-    ├── domain/                  # Entidades, contratos y casos de uso
-    └── presentation/            # BLoC, pantallas y widgets
+    ├── data/
+    │   ├── data_sources/        # Persistencia local
+    │   ├── models/
+    │   └── repositories/
+    ├── domain/
+    │   ├── entities/
+    │   ├── repositories/        # Contratos
+    │   └── use_cases/           # CRUD y cálculo de balance
+    └── presentation/
+        ├── bloc/
+        ├── pages/
+        └── widgets/
 
 test/finance_balance_test.dart   # Dominio, Hive, BLoC y widgets
 ```
@@ -68,9 +80,15 @@ flutter build apk --debug
 
 Las 10 pruebas verificadas cubren precisión monetaria, entradas inválidas, balance vacío y negativo, CRUD real con Hive, reapertura de almacenamiento, compatibilidad de registros, datos corruptos, filtros por año y mes, errores y orden de eventos BLoC, estado vacío y guardado desde el formulario. `flutter analyze` finaliza sin incidencias y la compilación web está verificada.
 
-La compilación `flutter build apk --debug` también está verificada con Eclipse Temurin **17.0.20.1**, Gradle **8.14**, Android Gradle Plugin **8.11.1** y Kotlin **2.2.20**. El APK se genera en `build/app/outputs/flutter-apk/app-debug.apk`; se comprobaron su integridad ZIP, alineación y firma v2 con certificado Android Debug. Es una compilación de desarrollo, sin validación de ejecución en Android.
+| Plataforma | Validación realizada |
+|---|---|
+| Web | Compilación `flutter build web` satisfactoria |
+| Android | APK debug generado; integridad ZIP, alineación y firma v2 Android Debug verificadas |
+| iOS, macOS, Linux y Windows | Configuración incluida; compilación y ejecución sin verificar |
 
-Para esta compilación se reutilizó un JDK 17 portátil, sin copiarlo ni cambiar la configuración global: `JAVA_HOME` y `PATH` se establecieron solo en el proceso, y Flutter recibió `jdk-dir` mediante un archivo `.flutter_settings` en un `APPDATA` aislado bajo `.dart_tool`. Cambiar únicamente `JAVA_HOME` puede no bastar si Flutter selecciona el Java de Android Studio.
+La compilación Android se verificó con JDK **17**, Gradle **8.14**, Android Gradle Plugin **8.11.1** y Kotlin **2.2.20**. El APK se genera en `build/app/outputs/flutter-apk/app-debug.apk`. Se requiere un SDK Android con los componentes y licencias correspondientes, y seleccionar un JDK compatible con Gradle. Si Flutter utiliza el Java de Android Studio, cambiar únicamente `JAVA_HOME` puede no bastar.
+
+Generar el APK no sustituye las pruebas de ejecución en un dispositivo o emulador Android.
 
 ## Limitaciones
 
@@ -78,8 +96,8 @@ Para esta compilación se reutilizó un JDK 17 portátil, sin copiarlo ni cambia
 - La persistencia usa el esquema numérico existente; la aritmética del balance se realiza en centavos.
 - No hay recuperación automática de archivos Hive dañados ni administración de categorías.
 - No hay pruebas en dispositivos físicos ni compilaciones verificadas de iOS, macOS, Linux o Windows.
-- El Java 25 predeterminado del entorno es incompatible con Gradle 8.14; la compilación comprobada utiliza JDK 17 mediante ajustes temporales del proceso.
-- Faltan Android `cmdline-tools`; aunque el SDK instalado permite generar el APK, `flutter doctor` no puede verificar el estado completo de licencias. No se instalaron herramientas ni se aceptaron licencias durante esta validación.
+- Gradle 8.14 no es compatible con Java 25; utiliza un JDK compatible, como JDK 17.
+- La comprobación completa del SDK y sus licencias mediante `flutter doctor` requiere Android `cmdline-tools`; esta comprobación sigue pendiente en el entorno utilizado para generar el APK.
 - Flutter advierte que las versiones actuales de Gradle, Android Gradle Plugin y Kotlin dejarán de estar admitidas en una versión futura; su actualización debe validarse por separado.
 - La configuración Android de publicación conserva identificador de ejemplo y firma de depuración; debe prepararse antes de distribuir una versión de producción.
 

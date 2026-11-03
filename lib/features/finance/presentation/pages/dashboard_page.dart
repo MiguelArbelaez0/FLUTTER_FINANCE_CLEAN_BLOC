@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_finance_clean_bloc/features/finance/presentation/bloc/finance_event.dart';
-import 'package:flutter_finance_clean_bloc/features/finance/presentation/widgets/month_selecto.dart';
+import 'package:flutter_finance_clean_bloc/features/finance/presentation/widgets/month_selector.dart';
 
 import '../bloc/finance_bloc.dart';
 import '../bloc/finance_state.dart';
 import '../widgets/balance_card.dart';
 import '../widgets/transaction_tile.dart';
 import 'transaction_form_page.dart';
-import '../../domain/use%20cases/calculate_balance.dart';
+import '../../domain/use_cases/calculate_balance.dart';
 
 class FinanceDashboardPage extends StatelessWidget {
   const FinanceDashboardPage({super.key});

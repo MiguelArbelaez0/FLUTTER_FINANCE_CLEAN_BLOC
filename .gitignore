@@ -47,8 +47,17 @@ app.*.map.json
 # Local financial data and private configuration
 *.hive
 *.lock.hive
+*.hive.lock
+**/transactions_box.lock
 .env
 .env.*
 !.env.example
 *.pem
 *.p12
+
+# Local tooling, signing keys and temporary files
+.tooling/
+*.jks
+*.keystore
+key.properties
+*.tmp

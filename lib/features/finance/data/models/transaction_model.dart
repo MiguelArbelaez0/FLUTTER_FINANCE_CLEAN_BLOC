@@ -16,7 +16,7 @@ class TransactionModel {
   static FinanceTransaction fromMap(Map data) {
     return FinanceTransaction(
       id: data['id'],
-      amount: data['amount'],
+      amount: (data['amount'] as num).toDouble(),
       type: TransactionType.values.firstWhere((e) => e.name == data['type']),
       category: data['category'],
       date: DateTime.parse(data['date']),

@@ -1,3 +1,4 @@
+import '../../../../core/utils/money.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -8,11 +9,11 @@ class BalanceCard extends StatelessWidget {
   const BalanceCard({super.key, required this.income, required this.expense});
 
   String _money(double value) =>
-      '\$ ${NumberFormat('#,##0', 'es_CO').format(value)}';
+      '\$ ${NumberFormat('#,##0.00', 'es_CO').format(value)}';
 
   @override
   Widget build(BuildContext context) {
-    final balance = income - expense;
+    final balance = (Money.cents(income) - Money.cents(expense)) / 100;
     final textTheme = Theme.of(context).textTheme;
 
     return Card(

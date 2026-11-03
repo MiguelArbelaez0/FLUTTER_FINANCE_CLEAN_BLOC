@@ -8,7 +8,7 @@ import '../bloc/finance_state.dart';
 import '../widgets/balance_card.dart';
 import '../widgets/transaction_tile.dart';
 import 'transaction_form_page.dart';
-import '../../../../core/utils/enums.dart';
+import '../../domain/use%20cases/calculate_balance.dart';
 
 class FinanceDashboardPage extends StatelessWidget {
   const FinanceDashboardPage({super.key});
@@ -25,23 +25,24 @@ class FinanceDashboardPage extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: BlocBuilder<FinanceBloc, FinanceState>(
+        child: BlocConsumer<FinanceBloc, FinanceState>(
+          listener: (context, state) {
+            if (state is FinanceLoaded &&
+                state.error != null &&
+                ModalRoute.of(context)?.isCurrent == true) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.error!)));
+            }
+          },
           builder: (context, state) {
             if (state is FinanceLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
             if (state is FinanceLoaded) {
-              final filtered = state.transactions.where((transaction) {
-                return transaction.date.year == state.selectedMonth.year &&
-                    transaction.date.month == state.selectedMonth.month;
-              }).toList();
-              final income = filtered
-                  .where((t) => t.type == TransactionType.income)
-                  .fold<double>(0, (sum, t) => sum + t.amount);
-              final expense = filtered
-                  .where((t) => t.type == TransactionType.expense)
-                  .fold<double>(0, (sum, t) => sum + t.amount);
+              final filtered = state.monthlyTransactions;
+              final balance = CalculateBalance()(filtered);
 
               return Center(
                 child: ConstrainedBox(
@@ -70,7 +71,10 @@ class FinanceDashboardPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: BalanceCard(income: income, expense: expense),
+                        child: BalanceCard(
+                          income: balance.totalIncome,
+                          expense: balance.totalExpense,
+                        ),
                       ),
                       MonthSelector(
                         month: state.selectedMonth,
@@ -145,37 +149,39 @@ class _EmptyMovements extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Center(
-    child: Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.receipt_long_outlined,
-            size: 36,
-            color: Color(0xFF6B7280),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            'Sin movimientos',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 4),
-          const Text(
-            'Este mes todavía no tienes movimientos registrados.',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xFF6B7280)),
-          ),
-          const SizedBox(height: 12),
-          OutlinedButton.icon(
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const TransactionFormPage()),
+    child: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.receipt_long_outlined,
+              size: 36,
+              color: Color(0xFF6B7280),
             ),
-            icon: const Icon(Icons.add),
-            label: const Text('Agregar movimiento'),
-          ),
-        ],
+            const SizedBox(height: 12),
+            Text(
+              'Sin movimientos',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 4),
+            const Text(
+              'Este mes todavía no tienes movimientos registrados.',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Color(0xFF6B7280)),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const TransactionFormPage()),
+              ),
+              icon: const Icon(Icons.add),
+              label: const Text('Agregar movimiento'),
+            ),
+          ],
+        ),
       ),
     ),
   );

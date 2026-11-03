@@ -8,7 +8,23 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final databaseService = LocalDatabaseService();
-  await databaseService.init();
+  try {
+    await databaseService.init();
+  } catch (_) {
+    runApp(
+      const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Text(
+              'No se pudo abrir el almacenamiento local. Reinicia la aplicación para reintentar.',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),
+    );
+    return;
+  }
 
   Bloc.observer = AppBlocObserver();
   runApp(const App());

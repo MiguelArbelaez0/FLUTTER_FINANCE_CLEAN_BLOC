@@ -1,5 +1,12 @@
 # Flutter Finance Clean BLoC
 
+> **Resumen para evaluación técnica**  
+> **Stack:** Flutter · Dart · BLoC · Hive  
+> **Evidencia:** Demuestra CRUD de transacciones, lógica de saldo y persistencia local mediante capas.  
+> **Código relevante:** Para evaluar: `lib/features/finance/domain/use cases/`, `lib/features/finance/presentation/bloc/`, `test/`.  
+> **Verificación:** revisión estática de repositorio; no equivale a ejecución de tests ni certificación de producción.
+
+
 Aplicación móvil de finanzas personales desarrollada con Flutter y Dart, utilizando BLoC, principios de Clean Architecture y persistencia local con Hive.
 
 ## 📱 Descripción general

@@ -1,5 +1,9 @@
 # Flutter Finance Clean BLoC
 
+> **Estado:** Completado  
+> **Versión:** `1.0.0+1 (pubspec.yaml)`  
+> **Tecnologías:** Flutter · Dart · BLoC · Hive
+
 Aplicación personal de finanzas desarrollada por Miguel Arbeláez Vallejo con Flutter, Dart, BLoC y persistencia local mediante Hive.
 
 ## Funcionalidades
